@@ -1,0 +1,35 @@
+# SQL Server
+*.mdf
+*.ldf
+*.bak
+*.trn
+*.log
+
+# Fichiers temporaires
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Environnement de développement
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Projets SSMS
+*.sqlproj
+*.sqlproj.user
+
+# Fichiers de configuration sensibles
+*.config
+secrets.*
+.env
