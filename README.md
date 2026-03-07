@@ -72,3 +72,25 @@ les auteurs, les éditeurs, les usagers ainsi que les emprunts et les retours.
 
 MIT
 
+
+
+\## Installation
+
+1\. Exécuter `sql/00\_create\_schema.sql` pour créer les tables
+
+2\. Exécuter `sql/10\_insert\_sample\_data.sql` pour insérer les données
+
+3\. Exécuter `sql/20\_queries\_required.sql` pour les requêtes
+
+
+
+\## Fichiers fournis
+
+\- `/sql` : Scripts SQL
+
+\- `/data` : Données au format CSV
+
+\- `/docs/diagrams` : Diagrammes MER/MLD/MPD
+
+\- `REPORT.pdf` : Rapport final
+

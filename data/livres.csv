@@ -1,0 +1,6 @@
+num_Livre,Titre,ISBN,num_Categorie,num_Editeur
+1,Le roman inconnu,01,1,1
+2,SQL Avancé,02,2,3
+3,MERISE Pratique,03,3,4
+4,Théorie relationnelle,04,4,2
+5,Patterns entreprise,05,5,2
