@@ -1,68 +1,98 @@
--- Créer une base de données
+
+
+-- Création de la base de données
 CREATE DATABASE Bibliothèque;
-use Bibliothèque
+GO
 
--- Créer une table(Auteur)
-CREATE TABLE Auteur
-(num_Auteur INT PRIMARY KEY IDENTITY,
-Nom VARCHAR(50),
-Prenom VARCHAR(50));
+USE Bibliothèque;
+GO
 
--- Créer une table(Categorie)
-CREATE TABLE Categorie
-(num_Categorie INT PRIMARY KEY IDENTITY,
-type_Categorie VARCHAR(50));
+-- Table AUTEUR
+CREATE TABLE Auteur (
+    num_Auteur INT PRIMARY KEY IDENTITY(1,1),
+    Nom VARCHAR(50) NOT NULL,
+    Prenom VARCHAR(50) NOT NULL
+);
+GO
 
--- Créer une table(Editeur)
-CREATE TABLE Editeur
-(num_Editeur INT PRIMARY KEY IDENTITY,
-nomEditeur VARCHAR(50),
-adresseEditeur VARCHAR(70));
+-- Table CATEGORIE
+CREATE TABLE Categorie (
+    num_Categorie INT PRIMARY KEY IDENTITY(1,1),
+    type_Categorie VARCHAR(50) NOT NULL UNIQUE
+);
+GO
 
--- Créer une table(Livre)
-CREATE TABLE Livre
-(num_Livre INT PRIMARY KEY IDENTITY,
-num_Categorie INT FOREIGN KEY REFERENCES Categorie(num_Categorie),
-num_Editeur INT FOREIGN KEY REFERENCES Editeur(num_Editeur),
-ISBN INT,
-Titre VARCHAR(50));
+-- Table EDITEUR
+CREATE TABLE Editeur (
+    num_Editeur INT PRIMARY KEY IDENTITY(1,1),
+    nomEditeur VARCHAR(50) NOT NULL,
+    adresseEditeur VARCHAR(100)
+);
+GO
 
--- Créer une table(Ecrire)
-CREATE TABLE Ecrire
-(num_Livre INT,
-num_Auteur INT,
-PRIMARY KEY(num_Livre, num_Auteur),
-FOREIGN KEY(num_Livre) REFERENCES Livre(num_Livre),
-FOREIGN KEY(num_Auteur) REFERENCES Auteur(num_Auteur));
+-- Table LIVRE
+CREATE TABLE Livre (
+    num_Livre INT PRIMARY KEY IDENTITY(1,1),
+    num_Categorie INT NOT NULL,
+    num_Editeur INT NOT NULL,
+    ISBN VARCHAR(20) UNIQUE,
+    Titre VARCHAR(100) NOT NULL,
+    FOREIGN KEY (num_Categorie) REFERENCES Categorie(num_Categorie),
+    FOREIGN KEY (num_Editeur) REFERENCES Editeur(num_Editeur)
+);
+GO
 
--- Créer une table(Exemplaire)
-CREATE TABLE Exemplaire
-(numExemplaire INT PRIMARY KEY IDENTITY,
-num_Livre INT FOREIGN KEY REFERENCES Livre(num_Livre),
-Etat VARCHAR(20) CHECK(Etat IN ('EMPRUNT','DISPONIBLE')),
-Emplacement INT)
+-- Table ECRIRE (relation livre-auteur)
+CREATE TABLE Ecrire (
+    num_Livre INT,
+    num_Auteur INT,
+    PRIMARY KEY (num_Livre, num_Auteur),
+    FOREIGN KEY (num_Livre) REFERENCES Livre(num_Livre),
+    FOREIGN KEY (num_Auteur) REFERENCES Auteur(num_Auteur)
+);
+GO
 
--- Créer une table(Usager)
-CREATE TABLE Usager
-(numUsager INT PRIMARY KEY IDENTITY,
-nomUsager VARCHAR(50),
-prenomUsager VARCHAR(50),
-typeUsager VARCHAR(50))
+-- Table EXEMPLAIRE
+CREATE TABLE Exemplaire (
+    numExemplaire INT PRIMARY KEY IDENTITY(1,1),
+    num_Livre INT NOT NULL,
+    Etat VARCHAR(20) CHECK(Etat IN ('EMPRUNT', 'DISPONIBLE', 'EN_RETARD')) DEFAULT 'DISPONIBLE',
+    Emplacement VARCHAR(50),
+    FOREIGN KEY (num_Livre) REFERENCES Livre(num_Livre)
+);
+GO
 
--- Créer une table(Bibliothécaire)
-CREATE TABLE Bibliothécaire
-(numBibliothécaire INT PRIMARY KEY IDENTITY,
-nomBibliothécaire VARCHAR(50),
-prenomBibliothécaire VARCHAR(50),
-Tel INT);
+-- Table USAGER
+CREATE TABLE Usager (
+    numUsager INT PRIMARY KEY IDENTITY(1,1),
+    nomUsager VARCHAR(50) NOT NULL,
+    prenomUsager VARCHAR(50) NOT NULL,
+    typeUsager VARCHAR(20) CHECK(typeUsager IN ('etudiant', 'professeur', 'membre')) NOT NULL
+);
+GO
 
--- Créer une table(Emprunt)
-CREATE TABLE Emprunt
-(numEmprunt  INT PRIMARY KEY IDENTITY,
-numUsager INT FOREIGN KEY REFERENCES Usager(numUsager),
-numExemplaire INT FOREIGN KEY REFERENCES Exemplaire(numExemplaire),
-numBibliothécaire INT FOREIGN KEY REFERENCES Bibliothécaire(numBibliothécaire),
-dateEmprunt DATE);
+-- Table BIBLIOTHECAIRE
+CREATE TABLE Bibliothécaire (
+    numBibliothécaire INT PRIMARY KEY IDENTITY(1,1),
+    nomBibliothécaire VARCHAR(50) NOT NULL,
+    prenomBibliothécaire VARCHAR(50) NOT NULL,
+    Tel VARCHAR(20)
+);
+GO
 
-ALTER TABLE Emprunt ADD dateRetour DATE;
+-- Table EMPRUNT
+CREATE TABLE Emprunt (
+    numEmprunt INT PRIMARY KEY IDENTITY(1,1),
+    numUsager INT NOT NULL,
+    numExemplaire INT NOT NULL,
+    numBibliothécaire INT NOT NULL,
+    dateEmprunt DATE NOT NULL,
+    dateRetour DATE,
+    FOREIGN KEY (numUsager) REFERENCES Usager(numUsager),
+    FOREIGN KEY (numExemplaire) REFERENCES Exemplaire(numExemplaire),
+    FOREIGN KEY (numBibliothécaire) REFERENCES Bibliothécaire(numBibliothécaire)
+);
+GO
 
+PRINT;
+GO

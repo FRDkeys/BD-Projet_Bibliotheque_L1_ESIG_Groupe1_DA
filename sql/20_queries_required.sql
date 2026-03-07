@@ -48,17 +48,13 @@ GROUP BY numUsager
 HAVING COUNT(*) > 1;
 
 -- D- Sous Requêtes --
--- (Socle D10) Livre le plus emprunté
-SELECT titre
-FROM Livre
-WHERE num_Livre IN (
-SELECT num_Livre
-FROM Exemplaire
-WHERE numExemplaire IN (
-SELECT numExemplaire
-FROM Emprunt
-)
-);
+-- (Socle D10) Livre le plus emprunté (VERSION CORRIGÉE)
+SELECT TOP 1 L.Titre, COUNT(E.numEmprunt) AS NombreEmprunts
+FROM Livre L
+JOIN Exemplaire EX ON L.num_Livre = EX.num_Livre
+JOIN Emprunt E ON EX.numExemplaire = E.numExemplaire
+GROUP BY L.Titre
+ORDER BY NombreEmprunts DESC;
 
 -- (Socle D11) Usagers ayant emprunté un livre
 SELECT nomUsager
